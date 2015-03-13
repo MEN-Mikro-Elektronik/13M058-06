@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Klaus Popp (MEN Mikro Elektronik GmbH) -->
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="packagedesc.xsd">
+	<name>13m05806</name>
+	<description>MDIS5 driver package for MEN M58 M-Module</description>
+	<date>2013-06-26</date>
+	<revision>2.1</revision>
+	<docroot>DRIVERS/MDIS_LL/M058/DOC/m58_drv.txt</docroot>
+	<modellist>
+		<model>
+			<hwname>M58</hwname>
+			<description>4x8 Bit binary I/O M-Module</description>
+			<devtype>MDIS</devtype>
+			<autoid>
+				<mmoduleid>0x5346003a</mmoduleid>
+			</autoid>
+			<busif>M-Module</busif>
+			<swmodulelist>
+				<swmodule>
+					<name>m58</name>
+					<description>Driver for M58</description>
+					<type>Low Level Driver</type>
+					<makefilepath>M058/DRIVER/COM/driver.mak</makefilepath>
+				</swmodule>
+			</swmodulelist>
+		</model>
+	</modellist>
+	<settinglist>
+		<setting>
+			<name>ID_CHECK</name>
+			<description>Define wether M-Module ID-PROM is checked</description>
+			<type>U_INT32</type>
+			<defaultvalue>1</defaultvalue>
+			<choises>
+				<choise>
+					<value>1</value>
+					<description>enable</description>
+				</choise>
+				<choise>
+					<value>0</value>
+					<description>disable -- ignore IDPROM</description>
+				</choise>
+			</choises>
+		</setting>
+		<setting>
+			<name>TRIG_EDGE</name>
+			<description>Define the trigger edge for data storage and interrupt generation</description>
+			<type>U_INT32</type>
+			<defaultvalue>0</defaultvalue>
+			<choises>
+				<choise>
+					<value>0</value>
+					<description>falling edge</description>
+				</choise>
+				<choise>
+					<value>1</value>
+					<description>rising edge</description>
+				</choise>
+			</choises>
+		</setting>
+		<setting>
+			<name>DATA_MODE</name>
+			<description>Defines the data storage mode - see manual</description>
+			<type>U_INT32</type>
+			<defaultvalue>0</defaultvalue>
+			<minvalue>0</minvalue>
+			<maxvalue>7</maxvalue>
+		</setting>
+		<setting>
+			<name>DATA_MODE</name>
+			<description>Defines the data storage mode - see manual</description>
+			<type>U_INT32</type>
+			<defaultvalue>0</defaultvalue>
+			<minvalue>0</minvalue>
+			<maxvalue>7</maxvalue>
+		</setting>
+		<settingsubdir rangestart="0" rangeend="3">
+			<name>CHANNEL_</name>
+			<setting>
+				<name>PORT_DIR</name>
+				<description>Defines the direction of the channel</description>
+				<type>U_INT32</type>
+				<defaultvalue>1</defaultvalue>
+				<choises>
+					<choise>
+						<value>0</value>
+						<description>output</description>
+					</choise>
+					<choise>
+						<value>1</value>
+						<description>input</description>
+					</choise>
+				</choises>
+			</setting>
+			<setting>
+				<name>PORT_TERM</name>
+				<description>Defines the termination of input on channel</description>
+				<type>U_INT32</type>
+				<defaultvalue>1</defaultvalue>
+				<choises>
+					<choise>
+						<value>0</value>
+						<description>active</description>
+					</choise>
+					<choise>
+						<value>1</value>
+						<description>passive</description>
+					</choise>
+				</choises>
+			</setting>
+			<setting>
+				<name>BUF_ENABLE</name>
+				<description>Enables/disables block I/O of channel n. If enabled, the corresponding channel is used with block I/O calls</description>
+				<type>U_INT32</type>
+				<defaultvalue>1</defaultvalue>
+				<choises>
+					<choise>
+						<value>0</value>
+						<description>disable</description>
+					</choise>
+					<choise>
+						<value>1</value>
+						<description>enable</description>
+					</choise>
+				</choises>
+			</setting>
+		</settingsubdir>
+		<settingsubdir>
+			<name>IN_BUF</name>
+			<setting>
+				<name>SIZE</name>
+				<description>Defines the size of the input buffer in bytes</description>
+				<type>U_INT32</type>
+				<defaultvalue>8</defaultvalue>
+				<minvalue>8</minvalue>
+			</setting>
+			<setting>
+				<name>MODE</name>
+				<description>defines the buffers block I/O mode - see MDIS5 User Guide</description>
+				<type>U_INT32</type>
+				<defaultvalue>0</defaultvalue>
+				<choises>
+					<choise>
+						<value>0</value>
+						<description>M_BUF_USRCTRL</description>
+					</choise>
+					<choise>
+						<value>1</value>
+						<description>M_BUF_RINGBUF</description>
+					</choise>
+					<choise>
+						<value>2</value>
+						<description>M_BUF_RINGBUF_OVERWR</description>
+					</choise>
+					<choise>
+						<value>3</value>
+						<description>M_BUF_CURRBUF</description>
+					</choise>
+				</choises>
+			</setting>
+			<setting>
+				<name>TIMEOUT</name>
+				<description>defines the buffers read timeout in msec. timeout 0 means no timeout </description>
+				<type>U_INT32</type>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting>
+				<name>HIGHWATER</name>
+				<description>defines the buffer level in bytes, of the corresponding highwater buffer event </description>
+				<type>U_INT32</type>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+		</settingsubdir>
+		<debugsetting mbuf="true"/>
+	</settinglist>
+	<swmodulelist>
+		<swmodule>
+			<name>m58_simp</name>
+			<description>Simple example program for the M58 driver</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/EXAMPLE/M58_SIMP/COM/program.mak</makefilepath>
+		</swmodule>
+		<swmodule>
+			<name>m58_blkread</name>
+			<description>Configure and read M58 input ports blockwise</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/TOOLS/M58_BLKREAD/COM/program.mak</makefilepath>
+		</swmodule>
+		<swmodule>
+			<name>m58_blkwrite</name>
+			<description>Configure and write M58 output ports blockwise</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/TOOLS/M58_BLKWRITE/COM/program.mak</makefilepath>
+		</swmodule>
+		<swmodule>
+			<name>m58_read</name>
+			<description>Configure and read M58 input ports</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/TOOLS/M58_READ/COM/program.mak</makefilepath>
+		</swmodule>
+		<swmodule>
+			<name>m58_trig</name>
+			<description>Wait for M58 trigger signals</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/TOOLS/M58_TRIG/COM/program.mak</makefilepath>
+		</swmodule>
+		<swmodule>
+			<name>m58_write</name>
+			<description>Configure and write M58 out ports</description>
+			<type>Driver Specific Tool</type>
+			<makefilepath>M058/TOOLS/M58_WRITE/COM/program.mak</makefilepath>
+		</swmodule>
+	</swmodulelist>
+</package>

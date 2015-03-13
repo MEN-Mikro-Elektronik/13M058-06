@@ -1,0 +1,125 @@
+Program Description
+===================
+Fri Apr 14 14:34:55  2000
+ 
+Overview of all Programs
+------------------------
+
+m58_blkread      - Configure and read M58 channels (blockwise)
+m58_blkwrite     - Configure and write M58 channels (blockwise)
+m58_read         - Configure and read M58 channel
+m58_trig         - Wait for M58 trigger signals
+m58_write        - Configure and write M58 channel
+
+Program m58_blkread
+-------------------
+
+Usage:
+   m58_blkread [<opts>] <device> [<opts>]
+
+Function:
+   Configure and read M58 channels (blockwise)
+
+Options:
+   device       device name                          [none]   
+   -s=<size>    block size                           [128]   
+   -b=<mode>    block i/o mode                       [0]   
+                0 = M_BUF_USRCTRL   
+                1 = M_BUF_CURRBUF   
+                2 = M_BUF_RINGBUF   
+                3 = M_BUF_RINGBUF_OVERWR   
+   -<i>=<enb>   channel i buffering enable           [none]   
+                0 = disable block i/o, leave direction   
+                1 = enable  block i/o, set input direction   
+   -e=<edge>    trigger edge      [none]   
+                0 = falling   
+                1 = rising   
+   -m=<mode>    data storage mode                    [none]   
+                0..7 = (refer to SW-Doc.)   
+   -t=<msec>    block read timeout [msec] (0=none)   [0]   
+   -l           loop mode   
+   
+Description:
+   Simple example program for the M58 driver    
+   
+   Configure and read M58 input ports (blockwise)    
+   
+Program m58_blkwrite
+--------------------
+
+Usage:
+   m58_blkwrite [<opts>] <device> <value(s)> [<opts>]
+
+Function:
+   Configure and write M58 channels (blockwise)
+
+Options:
+   device       device name                          [none]   
+   value(s)     block data bytes (hex)               [none]   
+   -<i>=<enb>   channel i buffering enable           [none]   
+                0 = disable block i/o, leave direction   
+                1 = enable  block i/o, set output direction   
+   -w           wait for key before exit   
+   
+Description:
+   Configure and write M58 output ports (blockwise)    
+   
+Program m58_read
+----------------
+
+Usage:
+   m58_read [<opts>] <device> [<opts>]
+
+Function:
+   Configure and read M58 channel
+
+Options:
+   device       device name                     [none]   
+   -c=<chan>    channel number (0..3)           [none]   
+   -m=<mode>    data storage mode               [none]   
+                0..7 = (refer to SW-Doc.)   
+   -t=<term>    termination of channel          [none]   
+                0 = active   
+                1 = passive   
+   -l           loop mode   
+   
+Description:
+   Configure and read M58 input ports   
+   
+Program m58_trig
+----------------
+
+Usage:
+   m58_trig [<opts>] <device> [<opts>]
+
+Function:
+   Wait for M58 trigger signals
+
+Options:
+   device       device name       [none]   
+   -e=<edge>    trigger edge      [none]   
+                0 = falling   
+                1 = rising   
+   -l           loop mode   
+   
+Description:
+   Wait for M58 trigger signals   
+   
+Program m58_write
+-----------------
+
+Usage:
+   m58_write [<opts>] <device> <value> [<opts>]
+
+Function:
+   Configure and write M58 channel
+
+Options:
+   device       device name                     [none]   
+   value        value to write (hex)            [none]   
+   -c=<chan>    channel number (0..3)           [none]   
+   -w           wait for key before exit   
+   
+Description:
+   Configure and write M58 out ports   
+   

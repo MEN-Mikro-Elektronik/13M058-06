@@ -1,0 +1,626 @@
+Function Description
+====================
+Fri Apr 14 14:34:48  2000
+ 
+Overview of all Functions
+-------------------------
+
+M58_GetEntry           - Initialize drivers jump table 
+M58_Init               - Allocate and return ll handle, initialize hardware 
+M58_Exit               - De-initialize hardware and cleanup memory 
+M58_Read               - Reads value from device 
+M58_Write              - Write value to device 
+M58_SetStat            - Set driver status 
+M58_GetStat            - Get driver status 
+M58_BlockRead          - Read data block from device 
+M58_BlockWrite         - Write data block to device 
+M58_Irq                - Interrupt service routine 
+M58_Info               - Get information about hardware and driver requirements. 
+ 
+
+Function M58_GetEntry()
+-----------------------
+
+Syntax:
+    #ifdef _ONE_NAMESPACE_PER_DRIVER_
+        extern void LL_GetEntry( LL_ENTRY* drvP )
+    #else
+        extern void GetEntry( LL_ENTRY* drvP )
+    #endif
+
+Description:
+    Initialize drivers jump table
+
+Input:
+    ---
+
+Output:
+    drvP  pointer to the initialized jump table structure
+
+
+Function M58_Init()
+-------------------
+
+Syntax:
+    static int32 M58_Init(
+        DESC_SPEC       *descP,
+        OSS_HANDLE      *osHdl,
+        MACCESS         *ma,
+        OSS_SEM_HANDLE  *devSemHdl,
+        OSS_IRQ_HANDLE  *irqHdl,
+        LL_HANDLE       **llHdlP
+    )
+
+Description:
+    Allocate and return ll handle, initialize hardware
+
+    The function initializes all channels with the 
+    definitions made in the descriptor. The interrupt 
+    is disabled.
+
+    The following descriptor keys are used:
+
+    Deskriptor key        Default          Range
+    --------------------  ---------------  -------------
+    DEBUG_LEVEL_DESC      OSS_DBG_DEFAULT  see dbg.h
+    DEBUG_LEVEL_MBUF      OSS_DBG_DEFAULT  see dbg.h
+    DEBUG_LEVEL           OSS_DBG_DEFAULT  see dbg.h
+    ID_CHECK              1                0..1 
+    TRIG_EDGE             0                0..1 
+    DATA_MODE             0                0..7
+    CHANNEL_n/PORT_DIR    1                0..1 
+    CHANNEL_n/PORT_TERM   1                0..1 
+    CHANNEL_n/BUF_ENABLE  1                0..1 
+    IN_BUF/SIZE           8                0..max
+    IN_BUF/MODE           0                M_BUF_xxx
+    IN_BUF/TIMEOUT        0                0..max
+    IN_BUF/HIGHWATER      0                0..max
+
+    TRIG_EDGE defines the trigger edge for data storage
+    and interrupt generation:
+
+       0 = falling edge
+       1 = risiing edge
+
+    DATA_MODE defines the data storage mode, i.e. which
+    channel(s) are stored on read access or trigger edge.
+    (For data storage modes, see M58_SetStat Function)
+
+    PORT_DIR defines the direction of channel n:
+
+       0 = output
+       1 = input
+
+    PORT_TERM defines the termination of input channel n:
+
+       0 = active
+       1 = passive
+
+    BUF_ENABLE enables/disables block i/o of channel n. If
+    enabled, the corresponding channel is used with block i/o
+    calls:
+
+       0 = disable
+       1 = enable
+
+    SIZE defines the size of the input buffer [bytes]
+    (minimum size is 8).
+
+    MODE defines the buffer's block i/o mode (see MDIS-Doc.):
+
+       0 = M_BUF_USRCTRL
+       1 = M_BUF_RINGBUF
+       2 = M_BUF_RINGBUF_OVERWR
+       3 = M_BUF_CURRBUF
+
+    TIMEOUT defines the buffers read timeout [msec]
+    (where timeout=0: no timeout) (see MDIS-Doc.).
+
+    HIGHWATER defines the buffer level in [bytes], of the 
+    corresponding highwater buffer event (see MDIS-Doc.).
+
+Input:
+    descSpec   pointer to descriptor data
+    osHdl      oss handle
+    ma         hw access handle
+    devSemHdl  device semaphore handle
+    irqHdl     irq handle
+
+Output:
+    llHdlP     ptr to low level driver handle
+    return     success (0) or error code
+
+
+Function M58_Exit()
+-------------------
+
+Syntax:
+    static int32 M58_Exit(
+       LL_HANDLE    **llHdlP
+    )
+
+Description:
+    De-initialize hardware and cleanup memory
+
+    The function deinitializes all channels by setting them
+    to input direction and passive termination. The interrupt 
+    is disabled.
+
+Input:
+    llHdlP    ptr to low level driver handle
+
+Output:
+    return    success (0) or error code
+
+
+Function M58_Read()
+-------------------
+
+Syntax:
+    static int32 M58_Read(
+        LL_HANDLE *llHdl,
+        int32 ch,
+        int32 *value
+    )
+
+Description:
+    Reads value from device
+
+    The function reads the state of the current channel.
+
+    Bits D7..D0 of the read value correspond with the port
+    pins PIO_x7..x0.
+
+    If the channel's direction is not configured as input
+    an ERR_LL_ILL_DIR error is returned.
+
+    Notes
+    -----
+    Pay attention to your correct channel configuration and  
+    data storage mode, since this has effect on correct 
+    channel latching (see also M58_SetStat and M58_BlockRead).
+
+Input:
+    llHdl    ll handle
+    ch       current channel
+
+Output:
+    valueP   read value
+    return   success (0) or error code
+
+
+Function M58_Write()
+--------------------
+
+Syntax:
+    static int32 M58_Write(
+        LL_HANDLE *llHdl,
+        int32 ch,
+        int32 value
+    )
+
+Description:
+    Write value to device
+
+    The function writes a value to the current channel (D7..D0).
+
+    Bits D7..D0 of the write value correspond with the port
+    pins PIO_x7..x0.
+
+    If the channel's direction is not configured as output
+    an ERR_LL_ILL_DIR error is returned.
+
+Input:
+    llHdl    ll handle
+    ch       current channel
+    value    value to write 
+
+Output:
+    return   success (0) or error code
+
+
+Function M58_SetStat()
+----------------------
+
+Syntax:
+    static int32 M58_SetStat(
+        LL_HANDLE *llHdl,
+        int32  code,
+        int32  ch,
+        INT32_OR_64 value32_or_64
+    )
+
+Description:
+    Set driver status
+
+    Following status codes are supported:
+
+    Code                 Description                Values
+    -------------------  -------------------------  ----------
+    M_LL_DEBUG_LEVEL     driver debug level         see oss.h
+    M_MK_IRQ_ENABLE      interrupt enable           0..1
+    M_LL_IRQ_COUNT       interrupt counter          0..max
+    M_LL_CH_DIR          direction of curr chan     M_CH_IN,
+                                                    M_CH_OUT
+    M_BUF_xxx            input buffer codes         see MDIS
+    -------------------  -------------------------  ----------
+    M58_BUF_ENABLE       block i/o of curr chan     0..1
+    M58_PORT_TERM        termination of curr chan   0..1
+    M58_TRIG_EDGE        trigger edge               0..1
+    M58_DATA_MODE        data storage mode          0..7
+    M58_TRIG_SIG_SET     trigger signal enable      1..max
+    M58_TRIG_SIG_CLR     trigger signal disable     -
+    -------------------  -------------------------  ----------
+
+    With M_LL_CH_DIR the direction of the current channel can
+    be altered (see MDIS Doc.).
+
+    M58_BUF_ENABLE enables/disables block i/o of current channel.
+    If enabled, the channel is used with block i/o calls:
+
+       0 = disable
+       1 = enable
+
+    M58_PORT_TERM defines the termination of current channel:
+
+       0 = active  (M58_TERM_ACTIVE)
+       1 = passive (M58_TRIG_RISE)
+
+    M58_TRIG_EDGE defines the trigger edge for data storage
+    and interrupt generation:
+
+       0 = falling (M58_TRIG_FALL)
+       1 = rising  (M58_TRIG_RISE)
+
+    M58_DATA_MODE defines the data storage mode, i.e. which
+    channel(s) are latched on read access or trigger edge:
+    (The data storage mode has only effect on input channels)
+
+       Mode     Chan. 0     Chan. 1     Chan. 2     Chan. 3
+       ----     -------     -------     -------     -------
+       0        read #0     read #1     read #2     read #3
+       1        read #0     read #0     read #0     read #0         
+       2        trigger     read #1     read #2     read #3
+       3        trigger     trigger     read #2     read #3
+       4        trigger     trigger     trigger     read #3
+       5        trigger     trigger     trigger     trigger
+       6        (reserved)
+       7        (data storage blocked)
+
+       (read #i) = Port state is latched when reading channel i
+       (trigger) = Port state is latched at trigger edge.
+
+    Modes 0..1 should normally be used for direct input, Mode 5
+    for buffered input. Modes 2..4 allow mixed usage of direct
+    and buffered i/o.
+
+    M58_TRIG_SIG_SET enables the trigger signal. The signal 
+    code is passed as value. Note that code=0 is not allowed.
+
+    M58_TRIG_SIG_CLR disables the trigger signal.
+
+    Notes
+    -----
+    Changing M_LL_CH_DIR, M58_BUF_ENABLE or M58_DATA_MODE while
+    block i/o is running, will cause unpredictable results !
+
+Input......:  llHdl         ll handle
+              code          status code
+              ch            current channel
+              value32_or_64 data or
+                            ptr to block data struct (M_SG_BLOCK)(*)
+                            (*) = for block status codes
+Output.....:  return        success (0) or error code
+
+
+Function M58_GetStat()
+----------------------
+
+Syntax:
+    static int32 M58_GetStat(
+        LL_HANDLE *llHdl,
+        int32  code,
+        int32  ch,
+        INT32_OR_64 *value32_or_64P
+    )
+
+Description:
+    Get driver status
+
+    Following status codes are supported:
+
+    Code                 Description                Values
+    -------------------  -------------------------  ----------
+    M_LL_DEBUG_LEVEL     driver debug level         see oss.h
+    M_LL_CH_NUMBER       number of channels         4
+    M_LL_CH_DIR          direction of curr chan     M_CH_IN,
+                                                    M_CH_OUT
+    M_LL_CH_LEN          length of curr chan [bits] 1..max
+    M_LL_CH_TYP          description of curr chan   M_CH_BINARY
+    M_LL_IRQ_COUNT       interrupt counter          0..max
+    M_LL_ID_CHECK        eeprom is checked          0..1
+    M_LL_ID_SIZE         eeprom size [bytes]        128
+    M_LL_BLK_ID_DATA     eeprom raw data            -
+    M_MK_BLK_REV_ID      ident function table ptr   -
+    M_BUF_xxx            input buffer codes         see MDIS
+    -------------------  -------------------------  ----------
+    M58_BUF_ENABLE       block i/o of curr chan     0..1
+    M58_PORT_TERM        termination of curr chan   0..1
+    M58_TRIG_EDGE        trigger edge               0..1
+    M58_DATA_MODE        data storage mode          0..7
+    M58_TRIG_SIG_SET     trigger signal code        0..max
+    M58_BUF_RDSIZE       nr of enabled input  chan. 0..4
+    M58_BUF_WRSIZE       nr of enabled output chan. 0..4
+    -------------------  -------------------------  ----------
+
+    M_LL_CH_DIR returns  the direction of the current channel
+    (see MDIS Doc.).
+
+    M58_BUF_ENABLE returns if current channel is used with
+    block i/o calls:
+
+       0 = disabled
+       1 = enabled
+
+    M58_PORT_TERM returns the termination of current channel:
+
+       0 = active  (M58_TERM_ACTIVE)
+       1 = passive (M58_TRIG_RISE)
+
+    M58_TRIG_EDGE returns the trigger edge for data storage
+    and interrupt generation:
+
+       0 = falling (M58_TRIG_FALL)
+       1 = rising  (M58_TRIG_RISE)
+
+    M58_DATA_MODE returns the data storage mode, i.e. which
+    channel(s) are latched on read access or trigger edge.
+    (For data storage modes, see M58_SetStat Function)
+
+    M58_TRIG_SIG_SET returns the signal code of an installed
+    trigger signal. Zero is returned, if no signal installed.
+
+    M58_BUF_RDSIZE returns the number of input channels where
+    block i/o is enabled (minimum size for M58_BlockRead). 
+
+    M58_BUF_WRSIZE returns the number of output channels where
+    block i/o is enabled (minimum size for M58_BlockWrite). 
+
+Input......:  llHdl             ll handle
+              code              status code
+              ch                current channel
+              value32_or_64P    ptr to block data struct (M_SG_BLOCK)(*)
+                                (*) = for block status codes
+Output.....:  value32_or_64P    data ptr or
+                                ptr to block data struct (M_SG_BLOCK)(*)
+              return            success (0) or error code
+                                (*) = for block status codes
+
+
+Function M58_BlockRead()
+------------------------
+
+Syntax:
+    static int32 M58_BlockRead(
+         LL_HANDLE *llHdl,
+         int32     ch,
+         void      *buf,
+         int32     size,
+         int32     *nbrRdBytesP
+    )
+
+Description:
+    Read data block from device
+
+    Following block i/o modes are supported:
+
+       M_BUF_USRCTRL         direct input
+       M_BUF_RINGBUF         buffered input
+       M_BUF_RINGBUF_OVERWR  buffered input
+       M_BUF_CURRBUF         buffered input
+
+    (Can be defined via M_BUF_RD_MODE setstat, see MDIS-Doc.)
+
+    Direct Input Mode
+    -----------------
+    For the M_BUF_USRCTRL mode, the function reads all input
+    channels, which are enabled for block i/o in ascending order
+    into the given data buffer:
+
+       +---------+
+       |  byte 0 |  first enabled input channel
+       +---------+
+       |  byte 1 |   
+       +---------+
+       |   ...   |   
+       +---------+
+       |  byte k |  last enabled input channel  
+       +---------+
+
+    The maximum size which can be read depends on the number
+    of enabled input channels and can be queried via the 
+    M58_BUF_RDSIZE getstat. 
+
+    If no input channel is enabled ERR_LL_READ is returned.
+
+    Pay attention to your correct channel configuration and  
+    data storage mode, since this has effect on correct 
+    channel latching. It is recommended to use one of the
+    following data storage modes:
+
+       mode=0: each channel 0..3 is latched when reading it
+       mode=1: all channels are latched when reading channel 0
+       mode=2: each channel 1..3 is latched when reading it
+       mode=3: each channel 2..3 is latched when reading it
+       mode=4:      channel    3 is latched when reading it
+
+    Buffered Input Mode
+    -------------------
+    For all other modes, the function copies requested number
+    of bytes from the input buffer to the given data buffer.
+    (see also function M58_Irq)
+
+    For details on buffered input modes refer to the MDIS-Doc.
+
+    Pay attention to your correct channel configuration and  
+    data storage mode, since this has effect on correct 
+    channel latching. It is recommended to use one of the
+    following data storage modes:
+
+       mode=2: channel 0        latched when trigger occured
+       mode=3: channel 0+1      latched when trigger occured
+       mode=4: channel 0+1+2    latched when trigger occured
+       mode=5: channel 0+1+2+3  latched when trigger occured
+
+Input:
+    llHdl        ll handle
+    ch           current channel
+    buf          data buffer
+    size         data buffer size
+
+Output:
+    nbrRdBytesP  number of read bytes
+    return       success (0) or error code
+
+
+Function M58_BlockWrite()
+-------------------------
+
+Syntax:
+    static int32 M58_BlockWrite(
+         LL_HANDLE *llHdl,
+         int32     ch,
+         void      *buf,
+         int32     size,
+         int32     *nbrWrBytesP
+    )
+
+Description:
+    Write data block to device
+
+    Following block i/o modes are supported:
+
+       M_BUF_USRCTRL         direct input
+
+    (Can be defined via M_BUF_WR_MODE setstat, see MDIS-Doc.)
+
+    Direct Input Mode
+    -----------------
+    The function writes the values from the given buffer to
+    all output channels, which are enabled for block i/o in
+    ascending order:
+
+       +---------+
+       |  byte 0 |  first enabled output channel
+       +---------+
+       |  byte 1 |   
+       +---------+
+       |   ...   |   
+       +---------+
+       |  byte k |  last enabled output channel  
+       +---------+
+
+    The maximum size which can be written depends on the number
+    of enabled output channels and can be queried via the 
+    M58_BUF_WRSIZE getstat. 
+
+    If no output channel is enabled ERR_LL_WRITE is returned.
+
+Input:
+    llHdl        ll handle
+    ch           current channel
+    buf          data buffer
+    size         data buffer size
+
+Output:
+    nbrWrBytesP  number of written bytes
+    return       success (0) or error code
+
+
+Function M58_Irq()
+------------------
+
+Syntax:
+    static int32 M58_Irq(
+       LL_HANDLE *llHdl
+    )
+
+Description:
+    Interrupt service routine
+
+    The interrupt is triggered when the defined edge of the
+    trigger signal occurs.
+
+    If an input buffer is used, all input channels, which
+    are enabled for block i/o are stored in ascending order
+    in the input buffer:
+
+       +---------+
+       |  byte 0 |  first enabled input channel
+       +---------+
+       |  byte 1 |   
+       +---------+
+       |   ...   |   
+       +---------+
+       |  byte k |  last enabled input channel  
+       +---------+
+
+    If trigger signal is enabled, the defined signal is send 
+    to the user process.
+
+Input:
+    llHdl    ll handle
+
+Output:
+    return   LL_IRQ_DEVICE    => device has caused irq
+             LL_IRQ_DEV_NOT   => not caused
+             LL_IRQ_UNKNOWN   => unknown
+
+
+Function M58_Info()
+-------------------
+
+Syntax:
+    static int32 M58_Info(
+       int32  infoType,
+       ...
+    )
+
+Description:
+    Get information about hardware and driver requirements.
+
+    Following info codes are supported:
+
+    Code                      Description
+    ------------------------  -----------------------------
+    LL_INFO_HW_CHARACTER      hardware characteristics
+    LL_INFO_ADDRSPACE_COUNT   nr of required address spaces
+    LL_INFO_ADDRSPACE         address space information
+    LL_INFO_IRQ               interrupt required
+    LL_INFO_LOCKMODE          process lock mode required
+
+    The LL_INFO_HW_CHARACTER code returns all address and 
+    data modes (OR'ed), which are supported from the
+    hardware (MDIS_MAxx, MDIS_MDxx).
+
+    The LL_INFO_ADDRSPACE_COUNT code returns the number
+    of address spaces used from the driver.
+
+    The LL_INFO_ADDRSPACE code returns information about one
+    specific address space (MDIS_MAxx, MDIS_MDxx). The returned 
+    data mode represents the widest hardware access used from 
+    the driver.
+
+    The LL_INFO_IRQ code returns, if the driver supports an
+    interrupt routine (TRUE or FALSE).
+
+    The LL_INFO_LOCKMODE code returns, which process locking
+    mode is required from the driver (LL_LOCK_xxx).
+
+Input:
+    infoType     info code
+    ...          argument(s)
+
+Output:
+    return       success (0) or error code
+
