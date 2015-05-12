@@ -777,7 +777,7 @@ static int32 M58_SetStat(
 )
 {
 	int32       value = (int32)value32_or_64; /* 32bit value     */
-	INT32_OR_64 valueP = value32_or_64;       /* stores 32/64bit pointer */
+	/* INT32_OR_64 valueP = value32_or_64;       /\* stores 32/64bit pointer *\/ */
 
 	int32 error = ERR_SUCCESS;
 
@@ -1270,7 +1270,7 @@ static int32 M58_BlockRead(
 			if (llHdl->bufEnable[n] && (llHdl->portDir[n] == PORT_DIR_IN))
 				*bufP++ = MREAD_D8(llHdl->ma, llHdl->portReg[n]);
 
-		*nbrRdBytesP = (u_int32)bufP - (u_int32)buf;
+		*nbrRdBytesP = (u_int32)(bufP - (u_int8*)buf);
 	}
 	/*-------------------------+
 	| read from input buffer   |
