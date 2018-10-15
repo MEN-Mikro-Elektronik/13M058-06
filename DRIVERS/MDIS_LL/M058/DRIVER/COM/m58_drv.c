@@ -97,8 +97,6 @@
  * (c) Copyright 1998 by MEN mikro elektronik GmbH, Nuernberg, Germany
  ****************************************************************************/
 
-static const char RCSid[]="$Id: m58_drv.c,v 1.9 2013/06/26 16:53:40 gv Exp $";
-
 #define _NO_LL_HANDLE		/* ll_defs.h: don't define LL_HANDLE struct */
 
 #include <MEN/men_typs.h>	/* system dependend definitions   */

@@ -38,8 +38,6 @@
  * (c) Copyright 1998 by MEN mikro elektronik GmbH, Nuernberg, Germany
  ****************************************************************************/
 
-static const char RCSid[]="$Header: /dd2/CVSR/COM/DRIVERS/MDIS_LL/M058/TOOLS/M58_WRITE/COM/m58_write.c,v 1.5 2013/06/26 16:53:44 gv Exp $";
-
 #include <stdio.h>
 #include <stdlib.h>
 
