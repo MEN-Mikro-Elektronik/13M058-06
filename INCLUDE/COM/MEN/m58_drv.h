@@ -13,26 +13,23 @@
  *     Switches: _ONE_NAMESPACE_PER_DRIVER_
  *               _LL_DRV_
  *
- *-------------------------------[ History ]---------------------------------
- *
- * $Log: m58_drv.h,v $
- * Revision 2.4  2013/06/26 16:53:56  gv
- * R: Porting to MDIS
- * M: Changed according to MDIS Porting Guide 0.9
- *
- * Revision 2.3  2004/06/02 17:05:54  kp
- * fixed typo (default variant now M58)
- *
- * Revision 2.2  2000/04/13 14:44:29  Schmidt
- * low-level driver prototypes moved to m58_drv.c
- * GetEntry declaration modified for swapping support
- *
- * Revision 2.1  1998/10/01 15:55:16  see
- * Added by mcvs
- *
  *---------------------------------------------------------------------------
  * (c) Copyright 1998 by MEN mikro elektronik GmbH, Nuernberg, Germany
  ****************************************************************************/
+/*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef _M58_LLDRV_H
 #define _M58_LLDRV_H

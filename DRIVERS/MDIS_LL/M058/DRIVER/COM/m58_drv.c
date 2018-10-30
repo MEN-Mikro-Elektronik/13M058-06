@@ -41,61 +41,23 @@
  *     Switches: _ONE_NAMESPACE_PER_DRIVER_, MAC_BYTESWAP,
  *               _BIG_ENDIAN_, _LITTLE_ENDIAN_
  *
- *-------------------------------[ History ]---------------------------------
- *
- * $Log: m58_drv.c,v $
- * Revision 1.9  2013/06/26 16:53:40  gv
- * R: Porting to MDIS
- * M: Changed according to MDIS Porting Guide 0.9
- *
- * Revision 1.8  2013/06/12 17:34:17  gv
- * R: Mixing of spaces & Tab caracters for indentation
- * M: Cosmetic, replace indetation with hard Tab characters
- *
- * Revision 1.7  2008/04/25 14:02:27  ww
- * Description in M58_SetStat() and M58_BlockRead() was wrong.
- *
- * Revision 1.6  2004/04/20 16:26:31  cs
- * Minor modifications for mdis4/2004 conformity
- *       some typecasts concerning m_read in M58_GetStat
- *
- * Revision 1.5  2000/04/13 14:44:20  Schmidt
- * low-level driver prototypes added, functions now static
- * GetEntry function and register offsets prepared for swapped variant
- *
- * Revision 1.4  1998/10/05 18:08:35  Schmidt
- * now different register offsets for big-/little-endian
- * LL_HANDLE      : portReg[CH_NUMBER] added
- * M58_Read       : uses 'llHdl->portReg[n]' instead of switch statement
- * M58_Write      : uses 'llHdl->portReg[n]' instead of switch statement
- * M58_BlockWrite : uses 'llHdl->portReg[n]' instead of 'PORTA_REG-n'
- * M58_BlockRead  : uses 'llHdl->portReg[n]' instead of 'PORTA_REG-n'
- * M58_Irq:       : uses 'llHdl->portReg[n]' instead of 'PORTA_REG-n'
- * M58_Irq: returns LL_IRQ_UNKNOWN instead of LL_IRQ_DEV_NOT
- * M58_GetStat(M58_TRIG_SIG_SET): uses 'dummy' instead of uninit. ptr 'dummyP'
- *
- * Revision 1.3  1998/10/02 17:36:40  see
- * M58_Init: don't allow buffer size=0, now default size=8
- * M58_Init: check for minimum buffer size=8
- *
- * Revision 1.2  1998/10/02 17:21:32  Schmidt
- * M58_BlockRead() : unreferenced local variable 'rest' removed
- * M58_Init()      : 'ctrl' casted to u_int16
- * LL_HANDLE       : bufRdSize, bufWrSize now int32
- *
- * Revision 1.1  1998/10/01 15:54:29  see
- * Added by mcvs
- *
- * ported from MDIS3 driver (revision 1.2)
- * NO_D32 switch removed, no D32 access supported
- * M58_Init: check descr params
- * M58_Exit: disable irqs
- * channel block i/o enable added
- * getstats for buffer read/write size added
- *
  *---------------------------------------------------------------------------
  * (c) Copyright 1998 by MEN mikro elektronik GmbH, Nuernberg, Germany
  ****************************************************************************/
+/*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #define _NO_LL_HANDLE		/* ll_defs.h: don't define LL_HANDLE struct */
 

@@ -13,27 +13,23 @@
  *     Required: MDIS user interface library
  *     Switches: NO_MAIN_FUNC	(for systems with one namespace)
  *
- *-------------------------------[ History ]---------------------------------
- *
- * $Log: m58_simp.c,v $
- * Revision 1.4  2013/06/26 16:53:42  gv
- * R: 1: Porting to MDIS
- *    2: Mixing of Tabs & space characters for indentation
- * M: 1: Changed according to MDIS Porting Guide 0.9
- *    2: Cosmetics : replacement of all spaces by 1 hard Tab for indentation
- *
- * Revision 1.3  2003/06/06 13:59:39  kp
- * cosmetics
- *
- * Revision 1.2  2000/04/14 14:33:55  Schmidt
- * usage and PrintError now static
- *
- * Revision 1.1  1998/10/01 15:54:39  see
- * Added by mcvs
- *
  *---------------------------------------------------------------------------
  * (c) Copyright 1998 by MEN mikro elektronik GmbH, Nuernberg, Germany
  ****************************************************************************/
+/*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
