@@ -6,19 +6,21 @@
 #
 #    Description: Makefile definitions for the M58 driver
 #
-#---------------------------------[ History ]---------------------------------
-#
-#   $Log: driver_sw.mak,v $
-#   Revision 1.2  2004/04/20 16:26:29  cs
-#   Minor modifications for mdis4/2004 conformity
-#         removed unused macro MAK_OPTIM=$(OPT_1)
-#
-#   Revision 1.1  2000/04/13 14:44:16  Schmidt
-#   Initial Revision
-#
 #-----------------------------------------------------------------------------
-#   (c) Copyright 2000 by MEN mikro elektronik GmbH, Nuernberg, Germany
+#   Copyright (c) 2000-2019, MEN Mikro Elektronik GmbH
 #*****************************************************************************
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 MAK_NAME=m58_sw
 
