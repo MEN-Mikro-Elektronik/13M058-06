@@ -1,8 +1,6 @@
 #***************************  M a k e f i l e  *******************************
 #
 #         Author: ds
-#          $Date: 2004/04/20 16:26:29 $
-#      $Revision: 1.2 $
 #
 #    Description: Makefile definitions for the M58 driver
 #
@@ -23,8 +21,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 MAK_NAME=m58_sw
+# the next line is updated during the MDIS installation
+STAMPED_REVISION="13M058-06_02_03-1-g70c719c-dirty_2019-05-10"
+
+DEF_REVISION=MAK_REVISION=$(STAMPED_REVISION)
 
 MAK_SWITCH=$(SW_PREFIX)MAC_MEM_MAPPED \
+		$(SW_PREFIX)$(DEF_REVISION) \
 		   $(SW_PREFIX)MAC_BYTESWAP \
 		   $(SW_PREFIX)M58_VARIANT=M58_SW \
 		   $(SW_PREFIX)ID_SW

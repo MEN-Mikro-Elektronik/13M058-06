@@ -5,8 +5,6 @@
  ****************************************************************************
  *
  *       Author: see
- *        $Date: 2013/06/26 16:53:48 $
- *    $Revision: 1.5 $
  *
  *  Description: Configure and write M58 output ports (blockwise)
  *
@@ -41,10 +39,11 @@
 #include <MEN/mdis_api.h>
 #include <MEN/m58_drv.h>
 
+static const char IdentString[]=MENT_XSTR(MAK_REVISION);
+
 /*--------------------------------------+
 |   DEFINES                             |
 +--------------------------------------*/
-#define REV "V1.0"      /* program revision */
 
 /*--------------------------------------+
 |   PROTOTYPES                          |
@@ -72,7 +71,7 @@ static void usage(void)
 	printf("                 1 = enable  block i/o, set output direction\n");
 	printf("    -w           wait for key before exit\n");
 	printf("\n");
-	printf("(c) 1998 by MEN mikro elektronik GmbH, %s\n\n",REV);
+	printf("Copyright (c) 1998-2019, MEN Mikro Elektronik GmbH\n%s\n", IdentString);
 }
 
 /********************************* main *************************************

@@ -4,8 +4,6 @@
  *      Project: M58 module driver (MDIS5)
  *
  *       Author: see
- *        $Date: 2013/06/26 16:53:40 $
- *    $Revision: 1.9 $
  *
  *  Description: Low level driver for M58 modules
  *
@@ -161,6 +159,8 @@ typedef struct {
 /* include files which need LL_HANDLE */
 #include <MEN/ll_entry.h>   /* low level driver jumptable  */
 #include <MEN/m58_drv.h>   /* M58 driver header file */
+
+static const char IdentString[]=MENT_XSTR(MAK_REVISION);
 
 /*-----------------------------------------+
 |  PROTOTYPES                              |

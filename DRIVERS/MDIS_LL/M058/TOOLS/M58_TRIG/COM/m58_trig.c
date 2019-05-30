@@ -5,8 +5,6 @@
  ****************************************************************************
  *
  *       Author: see
- *        $Date: 2013/06/26 16:53:50 $
- *    $Revision: 1.5 $
  *
  *  Description: Wait for M58 trigger signals
  *
@@ -40,10 +38,11 @@
 #include <MEN/mdis_api.h>
 #include <MEN/m58_drv.h>
 
+static const char IdentString[]=MENT_XSTR(MAK_REVISION);
+
 /*--------------------------------------+
 |   DEFINES                             |
 +--------------------------------------*/
-#define REV "V1.0"      /* program revision */
 
 /*--------------------------------------+
 |   PROTOTYPES                          |
@@ -92,7 +91,7 @@ static void usage(void)
 	printf("                 1 = rising\n");
 	printf("    -l           loop mode\n");
 	printf("\n");
-	printf("(c) 1998 by MEN mikro elektronik GmbH, %s\n\n",REV);
+	printf("Copyright (c) 1998-2019, MEN Mikro Elektronik GmbH\n%s\n", IdentString);
 }
 
 /********************************* main *************************************

@@ -3,8 +3,6 @@
  *         Name: m58_drv.h
  *
  *       Author: see
- *        $Date: 2013/06/26 16:53:56 $
- *    $Revision: 2.4 $
  *
  *  Description: Header file for M58 driver
  *               - M58 specific status codes

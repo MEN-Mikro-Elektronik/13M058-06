@@ -5,8 +5,6 @@
  ****************************************************************************
  *
  *       Author: see
- *        $Date: 2013/06/26 16:53:42 $
- *    $Revision: 1.4 $
  *
  *  Description: Simple example program for the M58 driver
  *
@@ -40,6 +38,8 @@
 #include <MEN/usr_oss.h>
 #include <MEN/usr_utl.h>
 #include <MEN/m58_drv.h>
+
+static const char IdentString[]=MENT_XSTR(MAK_REVISION);
 
 /*--------------------------------------+
 |   DEFINES                             |
