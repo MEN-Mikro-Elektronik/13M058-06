@@ -160,7 +160,6 @@ typedef struct {
 #include <MEN/ll_entry.h>   /* low level driver jumptable  */
 #include <MEN/m58_drv.h>   /* M58 driver header file */
 
-static const char IdentString[]=MENT_XSTR(MAK_REVISION);
 
 /*-----------------------------------------+
 |  PROTOTYPES                              |

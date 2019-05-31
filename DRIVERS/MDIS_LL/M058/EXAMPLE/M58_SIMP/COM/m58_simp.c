@@ -39,7 +39,6 @@
 #include <MEN/usr_utl.h>
 #include <MEN/m58_drv.h>
 
-static const char IdentString[]=MENT_XSTR(MAK_REVISION);
 
 /*--------------------------------------+
 |   DEFINES                             |
