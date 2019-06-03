@@ -160,6 +160,7 @@ typedef struct {
 #include <MEN/ll_entry.h>   /* low level driver jumptable  */
 #include <MEN/m58_drv.h>   /* M58 driver header file */
 
+static const char IdentString[]=MENT_XSTR(MAK_REVISION);
 
 /*-----------------------------------------+
 |  PROTOTYPES                              |
@@ -1529,7 +1530,7 @@ static int32 M58_Info(
  ****************************************************************************/
 static char* Ident( void )  /* nodoc */
 {
-	return( "M58 - M58 low level driver: $Id: m58_drv.c,v 1.9 2013/06/26 16:53:40 gv Exp $" );
+	return( (char*) IdentString );
 }
 
 /********************************* Cleanup **********************************
