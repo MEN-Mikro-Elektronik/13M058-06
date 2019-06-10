@@ -3,8 +3,8 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="packagedesc.xsd">
 	<name>13m05806</name>
 	<description>MDIS5 driver package for MEN M58 M-Module</description>
-	<date>2013-06-26</date>
-	<revision>2.1</revision>
+	<date>2019-06-07</date>
+	<revision>13M058-06_02_03-5-g8ecefac</revision>
 	<docroot>DRIVERS/MDIS_LL/M058/DOC/m58_drv.txt</docroot>
 	<modellist>
 		<model>
