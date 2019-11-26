@@ -5,7 +5,7 @@
 #    Description: Makefile definitions for M58 tools
 #
 #-----------------------------------------------------------------------------
-#   Copyright (c) 1998-2019, MEN Mikro Elektronik GmbH
+#   Copyright 1998-2019, MEN Mikro Elektronik GmbH
 #*****************************************************************************
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
